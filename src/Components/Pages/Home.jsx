@@ -27,7 +27,7 @@ const Home = () => {
   };
 
   return (
-    <main className="bg-gradient-to-b from-blue-50 via-white to-gray-50">
+    <main className="bg-gradient-to-b from-teal-50 via-white to-slate-50">
       {/* HERO SECTION */}
       <section className="py-16 md:py-24 px-4">
         <div className=" mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -43,7 +43,7 @@ const Home = () => {
               transition={{ duration: 0.8 }}
             >
               <span className="text-gray-900">Effortless </span>
-              <span className="text-blue-600">Asset Management</span>
+              <span className="text-teal-600">Asset Management</span>
               <span className="text-gray-900"> for Modern Companies</span>
             </motion.h1>
             
@@ -64,13 +64,13 @@ const Home = () => {
             >
               <Link 
                 to="/register-employee" 
-                className="btn btn-primary btn-lg px-8 bg-gradient-to-r from-blue-600 to-indigo-600 border-0 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="btn btn-primary btn-lg px-8 bg-gradient-to-r from-teal-500 to-cyan-500 border-0 text-white hover:from-teal-600 hover:to-cyan-600 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Join as Employee
               </Link>
               <Link 
                 to="/register-hr" 
-                className="btn btn-outline btn-lg px-8 border-2 border-blue-600 text-blue-600 hover:bg-blue-50 hover:border-blue-700 hover:text-blue-700 transition-all duration-300"
+                className="btn btn-outline btn-lg px-8 border-2 border-teal-500 text-teal-600 hover:bg-teal-50 hover:border-teal-600 hover:text-teal-700 transition-all duration-300"
               >
                 Register as HR
               </Link>
@@ -85,9 +85,9 @@ const Home = () => {
           >
             <div className="relative w-full max-w-lg">
               <motion.div 
-                className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20"
+                className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-200 rounded-full opacity-30"
                 animate={{ 
-                  scale: [1, 1.2, 1],
+                  scale: [1, 1.12, 1],
                   rotate: [0, 90, 0]
                 }}
                 transition={{ 
@@ -97,9 +97,9 @@ const Home = () => {
                 }}
               />
               <motion.div 
-                className="absolute -bottom-4 -left-4 w-20 h-20 bg-blue-400 rounded-full opacity-20"
+                className="absolute -bottom-4 -left-4 w-20 h-20 bg-cyan-200 rounded-full opacity-30"
                 animate={{ 
-                  scale: [1, 1.3, 1],
+                  scale: [1, 1.16, 1],
                   rotate: [0, -90, 0]
                 }}
                 transition={{ 
@@ -120,7 +120,7 @@ const Home = () => {
 
       {/* STATS SECTION */}
       <motion.section 
-        className="py-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+        className="py-12 bg-gradient-to-r from-teal-500 to-cyan-500 text-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -169,7 +169,7 @@ const Home = () => {
             variants={fadeInUp}
             viewport={{ once: true }}
           >
-            Why Choose <span className="text-blue-600">AssetVerse</span>?
+            Why Choose <span className="text-teal-600">AssetVerse</span>?
           </motion.h2>
 
           <motion.div 
@@ -183,37 +183,37 @@ const Home = () => {
               {
                 title: "Prevent Asset Loss",
                 desc: "Clear tracking and accountability for all physical assets.",
-                color: "from-blue-500 to-cyan-400",
+                color: "from-teal-400 to-emerald-300",
                 icon: "🔒"
               },
               {
                 title: "Request & Approval Workflow",
                 desc: "Employees request — HR approves — asset assigned.",
-                color: "from-green-500 to-emerald-400",
+                color: "from-cyan-400 to-teal-300",
                 icon: "📋"
               },
               {
                 title: "Multi-company Support",
                 desc: "Employees can be affiliated to multiple companies simultaneously.",
-                color: "from-purple-500 to-pink-400",
+                color: "from-purple-300 to-pink-200",
                 icon: "🏢"
               },
               {
                 title: "Real-time Analytics",
                 desc: "Interactive charts and reports for data-driven decisions.",
-                color: "from-orange-500 to-yellow-400",
+                color: "from-orange-200 to-yellow-200",
                 icon: "📊"
               },
               {
                 title: "Automated Notifications",
                 desc: "Get alerts for approvals, returns, and deadlines.",
-                color: "from-red-500 to-pink-400",
+                color: "from-rose-200 to-pink-200",
                 icon: "🔔"
               },
               {
                 title: "Secure & Scalable",
                 desc: "Enterprise-grade security with unlimited scaling.",
-                color: "from-indigo-500 to-blue-400",
+                color: "from-indigo-300 to-sky-200",
                 icon: "🛡️"
               }
             ].map((feature, index) => (
@@ -243,7 +243,7 @@ const Home = () => {
       </section>
 
       {/* PACKAGES SECTION */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white px-4">
+      <section className="py-16 bg-gradient-to-b from-slate-50 to-white px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2 
             className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800"
@@ -252,7 +252,7 @@ const Home = () => {
             variants={fadeInUp}
             viewport={{ once: true }}
           >
-            Flexible <span className="text-blue-600">Pricing</span> Plans
+            Flexible <span className="text-teal-600">Pricing</span> Plans
           </motion.h2>
           <motion.p 
             className="text-center text-gray-600 mb-12 max-w-2xl mx-auto"
@@ -277,8 +277,8 @@ const Home = () => {
                 price: "$5",
                 period: "/month",
                 features: ["Asset Tracking", "Employee Management", "Basic Support", "Up to 5 employees"],
-                color: "border-blue-200",
-                button: "btn-outline btn-blue",
+                color: "border-teal-100",
+                button: "btn-outline btn-teal",
                 popular: false
               },
               {
@@ -287,8 +287,8 @@ const Home = () => {
                 price: "$8",
                 period: "/month",
                 features: ["All Basic features", "Advanced Analytics", "Priority Support", "Up to 10 employees"],
-                color: "border-blue-500 border-2",
-                button: "btn-primary bg-gradient-to-r from-blue-600 to-indigo-600 border-0",
+                color: "border-teal-500 border-2",
+                button: "btn-primary bg-gradient-to-r from-teal-500 to-cyan-500 border-0",
                 popular: true
               },
               {
@@ -310,7 +310,7 @@ const Home = () => {
               >
                 {pkg.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                    <span className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
                       Most Popular
                     </span>
                   </div>
@@ -326,7 +326,7 @@ const Home = () => {
                   <ul className="mt-6 space-y-3">
                     {pkg.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center">
-                        <svg className="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-emerald-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         <span>{feature}</span>
@@ -359,7 +359,7 @@ const Home = () => {
             variants={fadeInUp}
             viewport={{ once: true }}
           >
-            How It <span className="text-blue-600">Works</span>
+            How It <span className="text-teal-600">Works</span>
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -406,14 +406,14 @@ const Home = () => {
                   >
                     {item.icon}
                   </motion.div>
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full text-xl font-bold mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-600 text-white rounded-full text-xl font-bold mb-4">
                     {item.step}
                   </div>
                   <h3 className="text-xl font-bold text-gray-800 mb-3">{item.title}</h3>
                   <p className="text-gray-600">{item.desc}</p>
                 </div>
                 {index < 2 && (
-                  <div className="hidden md:block absolute top-12 left-3/4 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-200 -z-10"></div>
+                  <div className="hidden md:block absolute top-12 left-3/4 w-full h-1 bg-gradient-to-r from-teal-300 to-teal-100 -z-10"></div>
                 )}
               </motion.div>
             ))}
@@ -423,7 +423,7 @@ const Home = () => {
 
       {/* FINAL CTA */}
       <motion.section 
-        className="py-16 px-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white"
+        className="py-16 px-4 bg-gradient-to-r from-teal-500 to-cyan-600 text-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -449,13 +449,13 @@ const Home = () => {
           >
             <Link 
               to="/register-hr" 
-              className="btn btn-lg px-10 bg-white text-blue-600 hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg"
+              className="btn btn-lg px-10 bg-white text-teal-600 hover:bg-gray-100 hover:scale-105 transition-all duration-300 shadow-lg"
             >
               Start Free Trial
             </Link>
             <Link 
               to="/contact" 
-              className="btn btn-lg px-10 btn-outline border-2 border-white text-white hover:bg-white hover:text-blue-600 hover:scale-105 transition-all duration-300"
+              className="btn btn-lg px-10 btn-outline border-2 border-white text-white hover:bg-white hover:text-teal-600 hover:scale-105 transition-all duration-300"
             >
               Book a Demo
             </Link>
