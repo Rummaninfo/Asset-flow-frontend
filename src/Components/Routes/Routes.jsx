@@ -5,6 +5,8 @@ import Register from "../Pages/Register";
 import EmployeeForm from "../Pages/Form/EmployeeForm";
 import HrForm from "../Pages/Form/HrForm";
 import Login from "../Pages/Form/Login";
+import PrivateRoutes from "./Private/PrivatesRoutes";
+import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -39,4 +41,11 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path:"dashboard",
+    element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
+    children: [
+      
+    ]
+  }
 ]);
