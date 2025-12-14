@@ -7,6 +7,10 @@ import HrForm from "../Pages/Form/HrForm";
 import Login from "../Pages/Form/Login";
 import PrivateRoutes from "./Private/PrivatesRoutes";
 import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
+import MyAssets from "../Pages/Dashboard/Hr/AssetsList";
+import AssetsList from "../Pages/Dashboard/Hr/AssetsList";
+import AddAsets from "../Pages/Dashboard/Hr/AddAsets";
+import RequestAssests from "../Pages/Dashboard/Employee/RequestAssests";
 
 export const router = createBrowserRouter([
   {
@@ -18,34 +22,54 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home></Home>,
       },
+
+      
       {
         path: "/register",
         element: <Register></Register>,
         children: [
           {
-            path: "/register/employee",
+            path: "employee",
 
             element: <EmployeeForm></EmployeeForm>,
           },
           {
-            path: "/register/hr",
+            path: "hr",
             index: true,
             element: <HrForm></HrForm>,
           },
           {
-            path: "/register/login",
+            path: "login",
             index: true,
             element: <Login></Login>,
           },
+        
         ],
       },
     ],
   },
+
+
   {
     path:"dashboard",
     element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
     children: [
-      
+         {
+          path: "assets-list", 
+          element: <AssetsList></AssetsList>
+         } ,
+         {
+          path: "add-assets", 
+          element: <AddAsets></AddAsets>
+         } ,
+         {
+          path: "my-assets", 
+          element: <MyAssets></MyAssets>
+         } ,
+         {
+          path: "requestAnassets", 
+          element: <RequestAssests></RequestAssests>
+         } ,
     ]
   }
 ]);

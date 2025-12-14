@@ -35,6 +35,14 @@ const Navbar = () => {
           Contact
         </NavLink>
       </li>
+      {user && (
+      <li>
+        <NavLink to="/dashboard" className={activeClass}>
+          Dashboard
+        </NavLink>
+      </li>
+    )}
+      
     </>
   );
    let handleOut = ()=>{

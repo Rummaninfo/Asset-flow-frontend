@@ -1,9 +1,10 @@
 import React from "react";
-import { Outlet, NavLink } from "react-router";
+import { Outlet, NavLink, Link } from "react-router";
 import { HiOutlineHome } from "react-icons/hi";
-import { MdInventory, MdSettings } from "react-icons/md";
+import { MdInventory, MdInventory2, MdSettings } from "react-icons/md";
 import UseAuth from "../../../Hook/UseAuth";
 import UseRole from "../../../Hook/UseRole";
+import { FiPackage, FiPlusSquare } from "react-icons/fi";
 
 const DashboardLayout = () => {
     let {user} = UseAuth()
@@ -85,7 +86,61 @@ const DashboardLayout = () => {
               </NavLink> */}
 
               {
-                role === "hr" ? <p>ami hr</p>: <p>ami employee</p>
+                role === "hr" ?
+                <>
+             {/* {  asset list} */}
+                 <NavLink
+                to="/dashboard/assets-list"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Assets"
+              >
+                <MdInventory className="text-lg" />
+                <span className="is-drawer-close:hidden ml-2">
+                  Asset List
+                </span>
+              </NavLink> 
+             {/* {  asset list} */}
+                 <NavLink
+                to="/dashboard/add-assets"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Assets"
+              >
+                <FiPlusSquare className="text-lg" />
+                <span className="is-drawer-close:hidden ml-2">
+                  Add Assets
+                </span>
+              </NavLink> 
+
+              </>
+                 :
+
+               
+                
+
+                ( <>
+                <NavLink
+                to="/dashboard/my-assets"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Assets"
+              >
+                <MdInventory2 className="text-lg" />
+                <span className="is-drawer-close:hidden ml-2">
+                 My Assets  
+                </span>
+              </NavLink> 
+                <NavLink
+                to="/dashboard/requestAnassets"
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Request an assets"
+              >
+                <FiPackage className="text-lg" />
+                <span className="is-drawer-close:hidden ml-2">
+                 Request an assets  
+                </span>
+              </NavLink> 
+              </> 
+             )
+
               }
             </li>
 
