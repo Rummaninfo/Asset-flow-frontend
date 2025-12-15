@@ -7,10 +7,11 @@ import HrForm from "../Pages/Form/HrForm";
 import Login from "../Pages/Form/Login";
 import PrivateRoutes from "./Private/PrivatesRoutes";
 import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
-import MyAssets from "../Pages/Dashboard/Hr/AssetsList";
+
 import AssetsList from "../Pages/Dashboard/Hr/AssetsList";
 import AddAsets from "../Pages/Dashboard/Hr/AddAsets";
 import RequestAssests from "../Pages/Dashboard/Employee/RequestAssests";
+import MyAssets from "../Pages/Dashboard/Employee/MyAssets";
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,7 @@ export const router = createBrowserRouter([
     path:"dashboard",
     element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
     children: [
+      // hr
          {
           path: "assets-list", 
           element: <AssetsList></AssetsList>
@@ -62,6 +64,9 @@ export const router = createBrowserRouter([
           path: "add-assets", 
           element: <AddAsets></AddAsets>
          } ,
+
+
+        //  employee
          {
           path: "my-assets", 
           element: <MyAssets></MyAssets>

@@ -18,9 +18,13 @@ const EmployeeForm = () => {
   } = useForm();
 
   const onSubmit = (data) => {
+    console.log(data, 'data')
     // 1️⃣ Create user (Firebase/Auth)
     createuser(data.email, data.password)
-      .then(() => {
+      .then((r) => {
+        console.log(r, 'rrrrrrrrr')
+
+       
         // 2️⃣ Prepare payload for backend
         const payload = {
           name: data.name,

@@ -1,11 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import UseAxios from "../../../../Hook/UseAxios";
-import { FiPackage } from "react-icons/fi";
 import UseAuth from "../../../../Hook/UseAuth";
+import { FiPackage } from "react-icons/fi";
+import UseRole from "../../../../Hook/UseRole";
+
 
 const RequestAssets = () => {
   const axiosSecure = UseAxios();
-  let {user} = UseAuth
+
+ 
+  const { user } = UseAuth();
+  console.log(user)
+
+  const [quantities, setQuantities] = useState({});
 
   const {
     data: assets = [],
@@ -31,18 +39,56 @@ const RequestAssets = () => {
     );
   }
 
-  let handleRequest = (asset)=>{
-    const requestData = {
-    assetId: asset._id,
-    assetName: asset.productName,
-    assetType: asset.productType,
-    requesterName: user.displayName,
-    requesterEmail: user.email,
-    hrEmail: asset.hrEmail,
-    companyName: asset.companyName,
+  // 🔹 single function for + / -
+  const updateQty = (asset, type) => {
+    setQuantities((prev) => {
+      const current = prev[asset._id] || 1;
+
+      if (type === "inc" && current < asset.availableQuantity) {
+        return { ...prev, [asset._id]: current + 1 };
+      }
+
+      if (type === "dec" && current > 1) {
+        return { ...prev, [asset._id]: current - 1 };
+      }
+
+      return prev;
+    });
   };
-  console.log(requestData)
-  }
+
+  // 🔹 send request
+  const handleRequest = async (asset) => {
+    console.log(asset,'asses')
+    const requestData = {
+      assetId: asset._id,
+      assetName: asset.productName,
+      assetType: asset.productType,
+      requestedQuantity: quantities[asset._id] || 1,
+      requesterName: user?.displayName,
+      requesterEmail: user?.email,
+      hrEmail: asset.hrEmail,
+      companyName: asset.companyName,
+      
+    };
+
+    axiosSecure.post("/asset-requests", requestData)
+    .then(request=>{
+      console.log(request)
+    })
+    .catch(er=>{
+      console.log(er)
+    })
+
+    console.log("Request Sent:", requestData);
+
+    // await axiosSecure.post("/asset-requests", requestData);
+
+    // reset quantity after request
+    setQuantities((prev) => ({
+      ...prev,
+      [asset._id]: 1,
+    }));
+  };
 
   return (
     <div className="p-4">
@@ -59,6 +105,7 @@ const RequestAssets = () => {
               <th>Name</th>
               <th>Type</th>
               <th>Available</th>
+              <th>Quantity</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -66,50 +113,76 @@ const RequestAssets = () => {
           <tbody>
             {assets.length === 0 ? (
               <tr>
-                <td colSpan="6" className="text-center py-6">
+                <td colSpan="7" className="text-center py-6">
                   No assets available
                 </td>
               </tr>
             ) : (
-              assets.map((asset, index) => (
-                <tr key={asset._id}>
-                  <td>{index + 1}</td>
+              assets.map((asset, index) => {
+                const qty = quantities[asset._id] || 1;
 
-                  <td>
-                    <img
-                      src={asset.productImage}
-                      alt={asset.productName}
-                      className="w-12 h-12 rounded object-cover"
-                    />
-                  </td>
+                return (
+                  <tr key={asset._id}>
+                    <td>{index + 1}</td>
 
-                  <td>{asset.productName}</td>
+                    <td>
+                      <img
+                        src={asset.productImage}
+                        alt={asset.productName}
+                        className="w-12 h-12 rounded object-cover"
+                      />
+                    </td>
 
-                  <td>
-                    <span
-                      className={`badge ${
-                        asset.productType === "Returnable"
-                          ? "badge-success"
-                          : "badge-warning"
-                      }`}
-                    >
-                      {asset.productType}
-                    </span>
-                  </td>
+                    <td>{asset.productName}</td>
 
-                  <td>{asset.availableQuantity}</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          asset.productType === "Returnable"
+                            ? "badge-success"
+                            : "badge-warning"
+                        }`}
+                      >
+                        {asset.productType}
+                      </span>
+                    </td>
 
-                  <td>
-                    <button
-                      className="btn btn-sm btn-primary gap-2"
-                      onClick={()=> handleRequest(asset._id)}
-                    >
-                      <FiPackage />
-                      Request
-                    </button>
-                  </td>
-                </tr>
-              ))
+                    <td>{asset.availableQuantity}</td>
+
+                    {/* Quantity */}
+                    <td className="flex items-center gap-2">
+                      <button
+                        className="btn btn-xs"
+                        disabled={qty === 1}
+                        onClick={() => updateQty(asset, "dec")}
+                      >
+                        -
+                      </button>
+
+                      <span className="font-semibold">{qty}</span>
+
+                      <button
+                        className="btn btn-xs"
+                        disabled={qty === asset.availableQuantity}
+                        onClick={() => updateQty(asset, "inc")}
+                      >
+                        +
+                      </button>
+                    </td>
+
+                    {/* Action */}
+                    <td>
+                      <button
+                        className="btn btn-sm btn-primary gap-2"
+                        onClick={() => handleRequest(asset)}
+                      >
+                        <FiPackage />
+                        Request
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

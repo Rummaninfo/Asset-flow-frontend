@@ -26,8 +26,9 @@ const HrForm = () => {
  
 
 
-    createuser(data.email, data.password)
+    createuser()
       .then((result) => {
+        console.log(result)
         let formData = new FormData();
         formData.append("image", profileImg);
         let imgApi = `https://api.imgbb.com/1/upload?expiration=600&key=${
