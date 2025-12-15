@@ -1,164 +1,179 @@
 import React from "react";
-import { Outlet, NavLink, Link } from "react-router";
+import { Outlet, NavLink } from "react-router";
 import { HiOutlineHome } from "react-icons/hi";
 import { MdInventory, MdInventory2, MdSettings } from "react-icons/md";
+import { FiPackage, FiPlusSquare } from "react-icons/fi";
 import UseAuth from "../../../Hook/UseAuth";
 import UseRole from "../../../Hook/UseRole";
-import { FiPackage, FiPlusSquare } from "react-icons/fi";
 
 const DashboardLayout = () => {
-    let {user} = UseAuth()
-    console.log(user)
-    let {role} = UseRole()
-    console.log(role)
+  let { user } = UseAuth();
+  let { role } = UseRole();
+
   return (
-    <div className="drawer container mx-auto lg:drawer-open min-h-screen">
+    <div className="drawer lg:drawer-open min-h-screen bg-base-100">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
 
       {/* MAIN CONTENT */}
-      <div className="drawer-content">
-        {/* NAVBAR */}
-        <nav className="navbar w-full bg-base-300">
+      <div className="drawer-content flex flex-col">
+        {/* TOP NAVBAR */}
+        <nav className="navbar bg-base-200 px-4 shadow-sm">
           <label
             htmlFor="my-drawer-4"
-            aria-label="open sidebar"
-            className="btn btn-square btn-ghost"
+            className="btn btn-square btn-ghost lg:hidden"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2"
-              fill="none"
-              stroke="currentColor"
-              className="my-1.5 inline-block size-4"
-            >
-              <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>
-              <path d="M9 4v16"></path>
-              <path d="M14 10l2 2l-2 2"></path>
-            </svg>
+            ☰
           </label>
-
-          <div className="px-4 font-semibold">AssetVerse Dashboard</div>
+          <h1 className="text-lg font-semibold text-primary">
+            AssetVerse Dashboard
+          </h1>
         </nav>
 
         {/* PAGE CONTENT */}
         <div className="p-6">
-            
           <Outlet />
         </div>
       </div>
 
       {/* SIDEBAR */}
-      <div className="drawer-side is-drawer-close:overflow-visible">
-        <label
-          htmlFor="my-drawer-4"
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
+      <div className="drawer-side">
+        <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
 
-        <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-          <ul className="menu w-full grow">
+        <aside className="w-64 bg-base-200 min-h-full border-r">
+          {/* USER INFO */}
+          <div className="p-5 border-b">
+            <p className="font-semibold text-sm">
+              {user?.displayName || "User"}
+            </p>
+            <p className="text-xs text-gray-500">{user?.email}</p>
+          </div>
+
+          {/* MENU */}
+          <ul className="menu p-4 space-y-1">
             {/* Home */}
             <li>
               <NavLink
                 to="/"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Homepage"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-primary text-white rounded-lg"
+                    : "rounded-lg hover:bg-base-300"
+                }
               >
                 <HiOutlineHome className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">Homepage</span>
+                Homepage
               </NavLink>
             </li>
 
-            {/* Asset List */}
-            <li>
-              {/* <NavLink
-                to="/dashboard/assets"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Assets"
-              >
-                <MdInventory className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                  Asset List
-                </span>
-              </NavLink> */}
+            {/* HR MENU */}
+            {role === "hr" && (
+              <>
+                <li className="menu-title mt-4">
+                  <span>HR Panel</span>
+                </li>
 
-              {
-                role === "hr" ?
-                <>
-             {/* {  asset list} */}
-                 <NavLink
-                to="/dashboard/assets-list"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Assets"
-              >
-                <MdInventory className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                  Asset List
-                </span>
-              </NavLink> 
-             {/* {  asset list} */}
-                 <NavLink
-                to="/dashboard/add-assets"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Assets"
-              >
-                <FiPlusSquare className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                  Add Assets
-                </span>
-              </NavLink> 
+                <li>
+                  <NavLink
+                    to="/dashboard/assets-list"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <MdInventory className="text-lg" />
+                    Asset List
+                  </NavLink>
+                </li>
 
+                <li>
+                  <NavLink
+                    to="/dashboard/add-assets"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <FiPlusSquare className="text-lg" />
+                    Add Assets
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/allrequest"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <FiPackage className="text-lg" />
+                     All Request
+                  </NavLink>
+                </li>
               </>
-                 :
+            )}
 
-               
+            {/* EMPLOYEE MENU */}
+            {role !== "hr" && (
+              <>
+                <li className="menu-title mt-4">
+                  <span>Employee Panel</span>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/my-assets"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <MdInventory2 className="text-lg" />
+                    My Assets
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/requestAnassets"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <FiPackage className="text-lg" />
+                    Request Assets
+                  </NavLink>
+                </li>
                 
+              </>
+            )}
 
-                ( <>
-                <NavLink
-                to="/dashboard/my-assets"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Assets"
-              >
-                <MdInventory2 className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                 My Assets  
-                </span>
-              </NavLink> 
-                <NavLink
-                to="/dashboard/requestAnassets"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Request an assets"
-              >
-                <FiPackage className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                 Request an assets  
-                </span>
-              </NavLink> 
-              </> 
-             )
-
-              }
+            {/* SETTINGS */}
+            <li className="menu-title mt-4">
+              <span>General</span>
             </li>
 
-            {/* Settings */}
             <li>
               <NavLink
                 to="/dashboard/settings"
-                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="Settings"
+                className={({ isActive }) =>
+                  isActive
+                    ? "bg-primary text-white rounded-lg"
+                    : "rounded-lg hover:bg-base-300"
+                }
               >
                 <MdSettings className="text-lg" />
-                <span className="is-drawer-close:hidden ml-2">
-                  Settings
-                </span>
+                Settings
               </NavLink>
             </li>
           </ul>
-        </div>
+        </aside>
       </div>
     </div>
   );

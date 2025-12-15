@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import UseAxios from "../../../Hook/UseAxios";
 import UseAuth from "../../../Hook/UseAuth";
-
+import { updateProfile } from "firebase/auth";
+import Swal from "sweetalert2";
 
 const EmployeeForm = () => {
   const axiosSecure = UseAxios();
@@ -17,36 +18,45 @@ const EmployeeForm = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data, 'data')
-    // 1️⃣ Create user (Firebase/Auth)
-    createuser(data.email, data.password)
-      .then((r) => {
-        console.log(r, 'rrrrrrrrr')
+  const onSubmit = async (data) => {
+    try {
+      // 1️⃣ Create Firebase user
+      const result = await createuser(data.email, data.password);
 
-       
-        // 2️⃣ Prepare payload for backend
-        const payload = {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-          dateOfBirth: data.dateOfBirth,
-          role: "employee",
-        };
-
-        console.log("employee information", payload);
-
-        // 3️⃣ Save user in backend DB
-        axiosSecure.post("/register", payload).then((result) => {
-          console.log(result);
-          navigate("/");
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+      // 2️⃣ Update Firebase profile (FIX displayName null)
+      await updateProfile(result.user, {
+        displayName: data.name,
       });
 
-    reset();
+      // 3️⃣ Backend payload
+      const payload = {
+        name: data.name,
+        email: data.email,
+        password: data.password, // ⚠️ backend-এ hash করা উচিত
+        dateOfBirth: data.dateOfBirth,
+        role: "employee",
+      };
+
+      // 4️⃣ Save user in backend DB
+      await axiosSecure.post("/register", payload);
+
+      Swal.fire({
+        title: "Registration Successful!",
+        text: "Employee account created successfully.",
+        icon: "success",
+        confirmButtonColor: "#14B8A6",
+      });
+
+      reset();
+      navigate("/");
+    } catch (error) {
+      console.error("Employee Registration Error:", error);
+      Swal.fire({
+        title: "Registration Failed",
+        text: "Something went wrong. Please try again.",
+        icon: "error",
+      });
+    }
   };
 
   return (
