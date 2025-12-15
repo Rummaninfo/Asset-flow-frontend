@@ -22,7 +22,11 @@ const MyAssets = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading your assets...</p>;
+    return (
+      <p className="text-center mt-10">
+        Loading your assets...
+      </p>
+    );
   }
 
   if (error) {
@@ -88,16 +92,18 @@ const MyAssets = () => {
                   </td>
 
                   <td>
-                    {item.status === "pending" && (
+                    {item.requestStatus === "pending" && (
                       <span className="badge badge-warning">
                         Pending
                       </span>
                     )}
+
                     {item.requestStatus === "approved" && (
                       <span className="badge badge-success">
                         Approved
                       </span>
                     )}
+
                     {item.requestStatus === "rejected" && (
                       <span className="badge badge-error">
                         Rejected
