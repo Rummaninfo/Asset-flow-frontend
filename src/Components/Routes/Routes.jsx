@@ -13,6 +13,8 @@ import AddAsets from "../Pages/Dashboard/Hr/AddAsets";
 import RequestAssests from "../Pages/Dashboard/Employee/RequestAssests";
 import MyAssets from "../Pages/Dashboard/Employee/MyAssets";
 import AllRequests from "../Pages/Dashboard/Hr/AllRequests";
+import MyTeam from "../Pages/Dashboard/Employee/MyTeam";
+
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +81,10 @@ export const router = createBrowserRouter([
          {
           path: "allrequest", 
           element: <AllRequests></AllRequests>
+         } ,
+         {
+          path: "myteam", 
+          element: <MyTeam></MyTeam>
          } ,
     ]
   }

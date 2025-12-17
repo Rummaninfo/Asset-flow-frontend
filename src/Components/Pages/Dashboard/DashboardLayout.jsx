@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router";
-import { HiOutlineHome } from "react-icons/hi";
+import { HiOutlineHome, HiUser } from "react-icons/hi";
 import { MdInventory, MdInventory2, MdSettings } from "react-icons/md";
 import { FiPackage, FiPlusSquare } from "react-icons/fi";
 import UseAuth from "../../../Hook/UseAuth";
@@ -113,6 +113,7 @@ const DashboardLayout = () => {
                      All Request
                   </NavLink>
                 </li>
+               
               </>
             )}
 
@@ -148,6 +149,20 @@ const DashboardLayout = () => {
                   >
                     <FiPackage className="text-lg" />
                     Request Assets
+                  </NavLink>
+                </li>
+
+                 <li>
+                  <NavLink
+                    to="/dashboard/myteam"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <HiUser className="text-lg" />
+                     My Team
                   </NavLink>
                 </li>
                 

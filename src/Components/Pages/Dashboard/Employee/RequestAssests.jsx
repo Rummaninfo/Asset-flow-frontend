@@ -3,15 +3,10 @@ import { useState } from "react";
 import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
 import { FiPackage } from "react-icons/fi";
-import UseRole from "../../../../Hook/UseRole";
-
 
 const RequestAssets = () => {
   const axiosSecure = UseAxios();
-
- 
   const { user } = UseAuth();
-  console.log(user)
 
   const [quantities, setQuantities] = useState({});
 
@@ -26,9 +21,14 @@ const RequestAssets = () => {
       return res.data;
     },
   });
+  console.log(assets, 'my assets')
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading assets...</p>;
+    return (
+      <p className="text-center mt-10 text-slate-500">
+        Loading assets...
+      </p>
+    );
   }
 
   if (error) {
@@ -39,7 +39,7 @@ const RequestAssets = () => {
     );
   }
 
-  // 🔹 single function for + / -
+  // 🔹 quantity update
   const updateQty = (asset, type) => {
     setQuantities((prev) => {
       const current = prev[asset._id] || 1;
@@ -58,7 +58,6 @@ const RequestAssets = () => {
 
   // 🔹 send request
   const handleRequest = async (asset) => {
-    console.log(asset,'asses')
     const requestData = {
       assetId: asset._id,
       assetName: asset.productName,
@@ -68,52 +67,51 @@ const RequestAssets = () => {
       requesterEmail: user?.email,
       hrEmail: asset.hrEmail,
       companyName: asset.companyName,
-      
     };
 
-    axiosSecure.post("/asset-requests", requestData)
-    .then(request=>{
-      console.log(request)
-    })
-    .catch(er=>{
-      console.log(er)
-    })
+    try {
+      await axiosSecure.post("/asset-requests", requestData);
 
-    console.log("Request Sent:", requestData);
-
-    // await axiosSecure.post("/asset-requests", requestData);
-
-    // reset quantity after request
-    setQuantities((prev) => ({
-      ...prev,
-      [asset._id]: 1,
-    }));
+      // reset quantity
+      setQuantities((prev) => ({
+        ...prev,
+        [asset._id]: 1,
+      }));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">
-        Request Assets ({assets.length})
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-6 text-slate-800">
+        Request Assets
+        <span className="ml-2 text-sm text-slate-500">
+          ({assets.length})
+        </span>
       </h2>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
+        <table className="table w-full">
+          <thead className="bg-slate-100 text-slate-700 text-sm">
             <tr>
-              <th>#</th>
+              <th className="py-4">#</th>
               <th>Image</th>
               <th>Name</th>
               <th>Type</th>
-              <th>Available</th>
-              <th>Quantity</th>
-              <th>Action</th>
+              <th className="text-center">Available</th>
+              <th className="text-center">Quantity</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {assets.length === 0 ? (
               <tr>
-                <td colSpan="7" className="text-center py-6">
+                <td
+                  colSpan="7"
+                  className="text-center py-10 text-slate-500"
+                >
                   No assets available
                 </td>
               </tr>
@@ -122,61 +120,83 @@ const RequestAssets = () => {
                 const qty = quantities[asset._id] || 1;
 
                 return (
-                  <tr key={asset._id}>
-                    <td>{index + 1}</td>
+                  <tr
+                    key={asset._id}
+                    className="hover:bg-slate-50 transition"
+                  >
+                    <td className="font-medium">
+                      {index + 1}
+                    </td>
 
                     <td>
                       <img
                         src={asset.productImage}
                         alt={asset.productName}
-                        className="w-12 h-12 rounded object-cover"
+                        className="w-12 h-12 rounded-lg object-cover border"
                       />
                     </td>
 
-                    <td>{asset.productName}</td>
+                    <td className="font-medium text-slate-800">
+                      {asset.productName}
+                      <p>{asset.companyName}</p>
+                    </td>
 
                     <td>
                       <span
-                        className={`badge ${
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
                           asset.productType === "Returnable"
-                            ? "badge-success"
-                            : "badge-warning"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-amber-100 text-amber-700"
                         }`}
                       >
                         {asset.productType}
                       </span>
                     </td>
 
-                    <td>{asset.availableQuantity}</td>
+                    <td className="text-center font-semibold">
+                      {asset.availableQuantity}
+                    </td>
 
                     {/* Quantity */}
-                    <td className="flex items-center gap-2">
-                      <button
-                        className="btn btn-xs"
-                        disabled={qty === 1}
-                        onClick={() => updateQty(asset, "dec")}
-                      >
-                        -
-                      </button>
+                    <td>
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          className="btn btn-xs btn-outline"
+                          disabled={qty === 1}
+                          onClick={() =>
+                            updateQty(asset, "dec")
+                          }
+                        >
+                          −
+                        </button>
 
-                      <span className="font-semibold">{qty}</span>
+                        <span className="w-6 text-center font-semibold">
+                          {qty}
+                        </span>
 
-                      <button
-                        className="btn btn-xs"
-                        disabled={qty === asset.availableQuantity}
-                        onClick={() => updateQty(asset, "inc")}
-                      >
-                        +
-                      </button>
+                        <button
+                          className="btn btn-xs btn-outline"
+                          disabled={
+                            qty === asset.availableQuantity
+                          }
+                          onClick={() =>
+                            updateQty(asset, "inc")
+                          }
+                        >
+                          +
+                        </button>
+                      </div>
                     </td>
 
                     {/* Action */}
-                    <td>
+                    <td className="text-center">
                       <button
-                        className="btn btn-sm btn-primary gap-2"
-                        onClick={() => handleRequest(asset)}
+                        className="btn btn-sm bg-indigo-600 hover:bg-indigo-700 text-white gap-2"
+                        onClick={() =>
+                          handleRequest(asset)
+                        }
                       >
-                        <FiPackage />
+                        <FiPackage className="text-base" />
                         Request
                       </button>
                     </td>
