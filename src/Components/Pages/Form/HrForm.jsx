@@ -9,7 +9,7 @@ import { updateProfile } from "firebase/auth";
 
 const HrForm = () => {
   const { createuser, user, setUser } = UseAuth();
-
+    
   const axiosSecure = UseAxios();
   const navigate = useNavigate();
 

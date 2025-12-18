@@ -1,14 +1,20 @@
 import React from "react";
 import { Outlet, NavLink } from "react-router";
 import { HiOutlineHome, HiUser } from "react-icons/hi";
-import { MdInventory, MdInventory2, MdSettings } from "react-icons/md";
+import {
+  MdInventory,
+  MdInventory2,
+  MdPeopleAlt,
+  MdSettings,
+} from "react-icons/md";
 import { FiPackage, FiPlusSquare } from "react-icons/fi";
+import { FaCrow, FaUser } from "react-icons/fa";
 import UseAuth from "../../../Hook/UseAuth";
 import UseRole from "../../../Hook/UseRole";
 
 const DashboardLayout = () => {
-  let { user } = UseAuth();
-  let { role } = UseRole();
+  const { user } = UseAuth();
+  const { role } = UseRole();
 
   return (
     <div className="drawer lg:drawer-open min-h-screen bg-base-100">
@@ -41,11 +47,33 @@ const DashboardLayout = () => {
 
         <aside className="w-64 bg-base-200 min-h-full border-r">
           {/* USER INFO */}
-          <div className="p-5 border-b">
-            <p className="font-semibold text-sm">
-              {user?.displayName || "User"}
-            </p>
-            <p className="text-xs text-gray-500">{user?.email}</p>
+          <div className="p-5 border-b flex items-center gap-4">
+            {/* Profile Image */}
+            <img
+              src={user?.photoURL || "https://i.ibb.co/7G5fZK1/user.png"}
+              alt="profile"
+              className="w-14 h-14 rounded-full border-2 border-primary object-cover"
+            />
+
+            {/* Name, Email, Role */}
+            <div className="flex-1">
+              <p className="font-semibold text-sm text-gray-800">
+                {user?.displayName || "User"}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {user?.email}
+              </p>
+
+              {/* Role Badge */}
+              {role === "hr" && (
+                <span
+                  className="inline-block mt-1 text-[10px] font-semibold
+                             bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full"
+                >
+                  HR
+                </span>
+              )}
+            </div>
           </div>
 
           {/* MENU */}
@@ -110,10 +138,50 @@ const DashboardLayout = () => {
                     }
                   >
                     <FiPackage className="text-lg" />
-                     All Request
+                    All Request
                   </NavLink>
                 </li>
-               
+
+                <li>
+                  <NavLink
+                    to="/dashboard/employee-list"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <MdPeopleAlt className="text-lg" />
+                    Employee List
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/upgrade-package"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <FaCrow className="text-lg" />
+                    Upgrade Package
+                  </NavLink>
+                </li>
+
+                <li>
+                  <NavLink
+                    to="/dashboard/hr-profile"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <FaUser className="text-lg" />
+                    Profile
+                  </NavLink>
+                </li>
               </>
             )}
 
@@ -152,7 +220,7 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
 
-                 <li>
+                <li>
                   <NavLink
                     to="/dashboard/myteam"
                     className={({ isActive }) =>
@@ -162,10 +230,9 @@ const DashboardLayout = () => {
                     }
                   >
                     <HiUser className="text-lg" />
-                     My Team
+                    My Team
                   </NavLink>
                 </li>
-                
               </>
             )}
 

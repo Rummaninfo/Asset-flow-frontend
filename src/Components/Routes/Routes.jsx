@@ -14,6 +14,9 @@ import RequestAssests from "../Pages/Dashboard/Employee/RequestAssests";
 import MyAssets from "../Pages/Dashboard/Employee/MyAssets";
 import AllRequests from "../Pages/Dashboard/Hr/AllRequests";
 import MyTeam from "../Pages/Dashboard/Employee/MyTeam";
+import EmployeeList from "../Pages/Dashboard/Hr/EmployeeList";
+import HrProfile from "../Pages/Dashboard/Hr/HrProfile";
+import UpgradePackage from "../Pages/Dashboard/Hr/UpgradePackage";
 
 
 export const router = createBrowserRouter([
@@ -85,6 +88,18 @@ export const router = createBrowserRouter([
          {
           path: "myteam", 
           element: <MyTeam></MyTeam>
+         } ,
+         {
+          path: "employee-list", 
+          element: <EmployeeList></EmployeeList>
+         } ,
+         {
+          path: "hr-profile", 
+          element: <HrProfile></HrProfile>
+         } ,
+         {
+          path: "upgrade-package", 
+          element: <UpgradePackage></UpgradePackage>
          } ,
     ]
   }

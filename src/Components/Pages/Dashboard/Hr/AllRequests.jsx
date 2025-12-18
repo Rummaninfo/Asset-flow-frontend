@@ -1,14 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import UseAuth from "../../../../Hook/UseAuth";
 import UseAxios from "../../../../Hook/UseAxios";
-
-
+import { useEffect } from "react";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AllRequests = () => {
   const axiosSecure = UseAxios();
   const { user } = UseAuth();
-  console.log(user, 'ami user')
+  console.log(user, "ami user");
+  let navigate = useNavigate()
 
+  // axiosSecure.get(`/user/${user.email}`)
+  // .then(data=>{
+  //   console.log(data, 'data asche')
+  // })
+  // .catch(er=>{
+  //   console.log(er)
+  // })
+
+  let { data: hr = [] } = useQuery({
+    queryKey: ["hr"],
+    queryFn: async () => {
+      let res = await axiosSecure.get(`/user/${user.email}`);
+      return res.data;
+    },
+  });
+  console.log(hr, "hrrrrrrrrrrrrr");
+
+  
+
+  
   const {
     data: requests = [],
     isLoading,
@@ -18,12 +40,11 @@ const AllRequests = () => {
     queryKey: ["hr-requests", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/hr-requests/${user.email}`
-      );
+      const res = await axiosSecure.get(`/hr-requests/${user.email}`);
       return res.data;
     },
   });
+  console.log(requests, "all request");
 
   if (isLoading) {
     return <p className="text-center mt-10">Loading requests...</p>;
@@ -31,14 +52,29 @@ const AllRequests = () => {
 
   if (error) {
     return (
-      <p className="text-center mt-10 text-red-500">
-        Failed to load requests
-      </p>
+      <p className="text-center mt-10 text-red-500">Failed to load requests</p>
     );
   }
 
   // approve / reject handler
-  const handleUpdateStatus = async (id, status) => {
+  const handleUpdateStatus = async (id, status, req) => {
+    console.log(req, "al reqiest");
+
+    let isLimited = hr?.currentEmployees >= hr.packageLimit;
+  console.log(isLimited);
+ 
+
+  if (isLimited && status === "approved") {
+    Swal.fire({
+      icon: "error",
+      title: "Package Limit Exceeded",
+      text: "আপনার প্যাকেজে ৫ জনের বেশি employee add করা যাবে না",
+      confirmButtonText: "Upgrade Package",
+      
+    })
+    navigate('/dashboard/upgrade-package')
+    return; // ⛔ এখানেই থামবে
+  }
     try {
       await axiosSecure.patch(`/requests/${id}`, {
         status,
@@ -92,25 +128,17 @@ const AllRequests = () => {
 
                   <td>{req.requestedQuantity}</td>
 
-                  <td>
-                    {new Date(req.requestDate).toLocaleDateString()}
-                  </td>
+                  <td>{new Date(req.requestDate).toLocaleDateString()}</td>
 
                   <td>
-                    {req.status === "pending" && (
-                      <span className="badge badge-warning">
-                        Pending
-                      </span>
+                    {req.requestStatus === "pending" && (
+                      <span className="badge badge-warning">Pending</span>
                     )}
-                    {req.status === "approved" && (
-                      <span className="badge badge-success">
-                        Approved
-                      </span>
+                    {req.requestStatus === "approved" && (
+                      <span className="badge badge-success">Approved</span>
                     )}
-                    {req.status === "rejected" && (
-                      <span className="badge badge-error">
-                        Rejected
-                      </span>
+                    {req.requestStatus === "rejected" && (
+                      <span className="badge badge-error">Rejected</span>
                     )}
                   </td>
 
@@ -120,7 +148,7 @@ const AllRequests = () => {
                         <button
                           className="btn btn-xs btn-success"
                           onClick={() =>
-                            handleUpdateStatus(req._id, "approved")
+                            handleUpdateStatus(req._id, "approved", req)
                           }
                         >
                           Approve

@@ -31,6 +31,7 @@ const MyTeam = () => {
       return res.data?.teamMembers || [];
     },
   });
+  console.log(companies)
 
   return (
     <div className="grid grid-cols-12 gap-6 p-6">

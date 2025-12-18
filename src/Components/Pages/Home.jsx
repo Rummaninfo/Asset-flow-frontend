@@ -2,8 +2,11 @@ import React from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import undraw from "../../assets/undraw_agreement_ftet.svg";
+import { useQuery } from "@tanstack/react-query";
+import UseAxios from "../../Hook/UseAxios";
 
 const Home = () => {
+  let axiosSecure = UseAxios()
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -25,6 +28,16 @@ const Home = () => {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } }
   };
+
+     let {data: packages = []} =useQuery({
+     queryKey: ["packages"],
+     queryFn: async()=>{
+      let res =  await axiosSecure.get("/packages")
+      return res.data
+
+     }
+     })
+     console.log(packages, 'all packatge')
 
   return (
     <main className="bg-gradient-to-b from-teal-50 via-white to-slate-50">
@@ -243,111 +256,106 @@ const Home = () => {
       </section>
 
       {/* PACKAGES SECTION */}
-      <section className="py-16 bg-gradient-to-b from-slate-50 to-white px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 
-            className="text-3xl md:text-4xl font-bold text-center mb-4 text-gray-800"
-            initial="hidden"
-            whileInView="visible"
-            variants={fadeInUp}
-            viewport={{ once: true }}
-          >
-            Flexible <span className="text-teal-600">Pricing</span> Plans
-          </motion.h2>
-          <motion.p 
-            className="text-center text-gray-600 mb-12 max-w-2xl mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            Choose the perfect plan for your company size and needs
-          </motion.p>
+      {/* PACKAGES SECTION */}
+<section className="py-20 bg-gradient-to-b from-slate-50 to-white px-4">
+  <div className="max-w-7xl mx-auto">
 
-          <motion.div 
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
+    {/* Heading */}
+    <motion.h2
+      className="text-3xl md:text-4xl font-bold text-center text-gray-800"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      Simple & Transparent{" "}
+      <span className="text-teal-600">Pricing</span>
+    </motion.h2>
+
+    <motion.p
+      className="text-center text-gray-600 mt-4 mb-14 max-w-2xl mx-auto"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+    >
+      Choose the perfect plan based on your company size. No hidden costs.
+    </motion.p>
+
+    {/* Packages Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {packages.map((pkg, index) => {
+        const isPopular = pkg.name === "Standard";
+
+        return (
+          <motion.div
+            key={pkg._id || index}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: isPopular ? 1.05 : 1.03 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className={`relative rounded-2xl bg-white border shadow-lg p-8 flex flex-col
+              ${isPopular ? "border-teal-500 shadow-2xl" : "border-gray-200"}
+            `}
           >
-            {[
-              {
-                name: "Basic",
-                employees: "5 employees",
-                price: "$5",
-                period: "/month",
-                features: ["Asset Tracking", "Employee Management", "Basic Support", "Up to 5 employees"],
-                color: "border-teal-100",
-                button: "btn-outline btn-teal",
-                popular: false
-              },
-              {
-                name: "Standard",
-                employees: "10 employees",
-                price: "$8",
-                period: "/month",
-                features: ["All Basic features", "Advanced Analytics", "Priority Support", "Up to 10 employees"],
-                color: "border-teal-500 border-2",
-                button: "btn-primary bg-gradient-to-r from-teal-500 to-cyan-500 border-0",
-                popular: true
-              },
-              {
-                name: "Premium",
-                employees: "20 employees",
-                price: "$15",
-                period: "/month",
-                features: ["All Standard features", "Custom Branding", "24/7 Support", "Up to 20 employees"],
-                color: "border-purple-200",
-                button: "btn-outline btn-purple",
-                popular: false
-              }
-            ].map((pkg, index) => (
-              <motion.div 
-                key={index}
-                variants={scaleIn}
-                whileHover={{ scale: pkg.popular ? 1.05 : 1.02 }}
-                className={`relative rounded-2xl bg-white shadow-xl ${pkg.color} ${pkg.popular ? 'shadow-2xl scale-105' : ''}`}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-800">{pkg.name}</h3>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-gray-900">{pkg.price}</span>
-                    <span className="text-gray-600 ml-2">{pkg.period}</span>
-                  </div>
-                  <p className="text-gray-600 mt-2">{pkg.employees}</p>
-                  
-                  <ul className="mt-6 space-y-3">
-                    {pkg.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <svg className="w-5 h-5 text-emerald-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="mt-8">
-                    <Link 
-                      to="/register-hr" 
-                      className={`btn btn-lg w-full ${pkg.button} hover:shadow-lg transition-all duration-300`}
-                    >
-                      Choose {pkg.name}
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+            {/* Popular Badge */}
+            {isPopular && (
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white px-5 py-1 rounded-full text-sm font-semibold">
+                Most Popular
+              </span>
+            )}
+
+            {/* Title */}
+            <h3 className="text-2xl font-bold text-gray-800 text-center">
+              {pkg.name}
+            </h3>
+
+            {/* Price */}
+            <div className="text-center mt-6">
+              <span className="text-5xl font-extrabold text-gray-900">
+                ${pkg.price}
+              </span>
+              <span className="text-gray-500 text-sm ml-1">/ month</span>
+            </div>
+
+            {/* Employee limit */}
+            <p className="text-center text-gray-600 mt-3">
+              Up to{" "}
+              <span className="font-semibold">
+                {pkg.employeeLimit}
+              </span>{" "}
+              employees
+            </p>
+
+            {/* Features */}
+            <ul className="mt-8 space-y-4 flex-1">
+              {pkg.features.map((feature, idx) => (
+                <li key={idx} className="flex items-start gap-3 text-gray-700">
+                  <span className="text-emerald-500 mt-1">✔</span>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Button */}
+            <Link
+              to="/register-hr"
+              className={`mt-8 btn w-full text-lg
+                ${
+                  isPopular
+                    ? "bg-gradient-to-r from-teal-500 to-cyan-500 text-white border-0 hover:from-teal-600 hover:to-cyan-600"
+                    : "btn-outline border-teal-500 text-teal-600 hover:bg-teal-50"
+                }
+              `}
+            >
+              Choose {pkg.name}
+            </Link>
           </motion.div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
 
       {/* HOW IT WORKS */}
       <section className="py-16 px-4">
