@@ -2,9 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import UseAxios from "../../../../Hook/UseAxios";
 import { FaCheck } from "react-icons/fa";
 import UseAuth from "../../../../Hook/UseAuth";
+import { useNavigate } from "react-router";
 
 const UpgradePackage = () => {
   const axiosSecure = UseAxios();
+  let navigate = useNavigate()
   let { user } = UseAuth();
 
   const { data: packages = [], isLoading } = useQuery({
@@ -33,8 +35,10 @@ const UpgradePackage = () => {
       "/create-checkout-session",
       paymentinformation
     );
+    
     console.log(res.data)
     window.location.href = res.data.url
+    
   };
 
   return (

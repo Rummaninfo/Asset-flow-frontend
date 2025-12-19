@@ -17,6 +17,8 @@ import MyTeam from "../Pages/Dashboard/Employee/MyTeam";
 import EmployeeList from "../Pages/Dashboard/Hr/EmployeeList";
 import HrProfile from "../Pages/Dashboard/Hr/HrProfile";
 import UpgradePackage from "../Pages/Dashboard/Hr/UpgradePackage";
+import PaymentSucess from "../Pages/Dashboard/Payments/PaymentSucess";
+import PaymentCancel from "../Pages/Dashboard/Payments/PaymentCancel";
 
 
 export const router = createBrowserRouter([
@@ -100,6 +102,14 @@ export const router = createBrowserRouter([
          {
           path: "upgrade-package", 
           element: <UpgradePackage></UpgradePackage>
+         } ,
+         {
+          path: "payment-success", 
+          element: <PaymentSucess></PaymentSucess>
+         } ,
+         {
+          path: "payment-cancel", 
+          element: <PaymentCancel></PaymentCancel>
          } ,
     ]
   }
