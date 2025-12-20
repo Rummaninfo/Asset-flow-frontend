@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 import UseAuth from "../../../Hook/UseAuth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
-  const { signInUser } = UseAuth()
+  const { signinuser } = UseAuth()
+  let navigate = useNavigate()
 
   const {
     register,
@@ -17,8 +19,9 @@ const Login = () => {
   const onSubmit = (data) => {
     console.log("Login Data:", data);
 
-    signInUser(data.email, data.password)
+    signinuser(data.email, data.password)
       .then((result) => {
+        navigate("/dashboard")
         Swal.fire({
           title: "Login Successful",
           text: "Welcome back!",

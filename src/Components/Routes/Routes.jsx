@@ -19,6 +19,7 @@ import HrProfile from "../Pages/Dashboard/Hr/HrProfile";
 import UpgradePackage from "../Pages/Dashboard/Hr/UpgradePackage";
 import PaymentSucess from "../Pages/Dashboard/Payments/PaymentSucess";
 import PaymentCancel from "../Pages/Dashboard/Payments/PaymentCancel";
+import EmployeProfile from "../Pages/Dashboard/Employee/EmployeProfile";
 
 
 export const router = createBrowserRouter([
@@ -98,6 +99,10 @@ export const router = createBrowserRouter([
          {
           path: "hr-profile", 
           element: <HrProfile></HrProfile>
+         } ,
+         {
+          path: "employeprofile", 
+          element: <EmployeProfile></EmployeProfile>
          } ,
          {
           path: "upgrade-package", 

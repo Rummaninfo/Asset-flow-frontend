@@ -15,6 +15,7 @@ import UseRole from "../../../Hook/UseRole";
 const DashboardLayout = () => {
   const { user } = UseAuth();
   const { role } = UseRole();
+  console.log(user, 'user')
 
   return (
     <div className="drawer lg:drawer-open min-h-screen bg-base-100">
@@ -231,6 +232,19 @@ const DashboardLayout = () => {
                   >
                     <HiUser className="text-lg" />
                     My Team
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/employeprofile"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "bg-primary text-white rounded-lg"
+                        : "rounded-lg hover:bg-base-300"
+                    }
+                  >
+                    <HiUser className="text-lg" />
+                    Employe Profile
                   </NavLink>
                 </li>
               </>

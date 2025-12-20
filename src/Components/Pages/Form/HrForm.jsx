@@ -70,7 +70,7 @@ const HrForm = () => {
       });
 
       reset();
-      navigate("/");
+      navigate("/")
     } catch (error) {
       console.error("HR Registration Error:", error);
       Swal.fire({
