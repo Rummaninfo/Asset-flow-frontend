@@ -19,6 +19,7 @@ const MyTeam = () => {
       return res.data?.companies || [];
     },
   });
+  console.log(companies, 'all companis')
 
   // 🔹 Load team members
   const { data: team = [], isLoading } = useQuery({
