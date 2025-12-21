@@ -20,6 +20,7 @@ const MyAssets = () => {
       return res.data;
     },
   });
+  console.log(requests, "all assets")
 
   if (isLoading) {
     return (
@@ -92,19 +93,19 @@ const MyAssets = () => {
                   </td>
 
                   <td>
-                    {item.requestStatus === "pending" && (
+                    {item.status === "pending" && (
                       <span className="badge badge-warning">
                         Pending
                       </span>
                     )}
 
-                    {item.requestStatus === "approved" && (
+                    {item.status === "approved" && (
                       <span className="badge badge-success">
                         Approved
                       </span>
                     )}
 
-                    {item.requestStatus === "rejected" && (
+                    {item.status === "rejected" && (
                       <span className="badge badge-error">
                         Rejected
                       </span>

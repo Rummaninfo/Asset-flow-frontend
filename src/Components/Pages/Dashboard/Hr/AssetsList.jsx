@@ -15,11 +15,13 @@ import {
   Tooltip,
 } from "recharts";
 import Swal from "sweetalert2";
+import UseAuth from "../../../../Hook/UseAuth";
 
 const AssetsList = () => {
   const axiosSecure = UseAxios();
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
+  let {user} = UseAuth()
 
   // URL থেকে page নিবো, নাইলে 1
   const page = parseInt(searchParams.get("page")) || 1;
@@ -33,7 +35,7 @@ const AssetsList = () => {
   } = useQuery({
     queryKey: ["assets"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/assets-list");
+      const res = await axiosSecure.get(`/assets-list/${user?.email}`);
       return res.data;
     },
   });
@@ -213,7 +215,7 @@ const AssetsList = () => {
               <th className="py-3 px-4 text-left">Type</th>
               <th className="py-3 px-4 text-left">Quantity</th>
               <th className="py-3 px-4 text-left">Available</th>
-              <th className="py-3 px-4 ">Action</th>
+              <th className="py-3 px-4 text-left ">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -241,8 +243,8 @@ const AssetsList = () => {
                 </td>
                 <td className="py-3 px-4">{asset.productQuantity}</td>
                 <td className="py-3 px-4">{asset.availableQuantity}</td>
-                <td className="py-3  px-4">
-                  <button className="btn  ">Assign</button>
+                <td className="py-3   px-3">
+                  <button className="btn ">Assign</button>
                   <button
                     onClick={() => handleRemove(asset._id)}
                     className="btn ml-2 "
@@ -312,4 +314,4 @@ const AssetsList = () => {
   );
 };
 
-export default AssetsList;
+export default AssetsList;   

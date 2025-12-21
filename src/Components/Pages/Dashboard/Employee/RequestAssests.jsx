@@ -62,11 +62,12 @@ const RequestAssets = () => {
       assetId: asset._id,
       assetName: asset.productName,
       assetType: asset.productType,
-      requestedQuantity: quantities[asset._id] || 1,
+      // requestedQuantity: quantities[asset._id] || 1,
       requesterName: user?.displayName,
       requesterEmail: user?.email,
       hrEmail: asset.hrEmail,
       companyName: asset.companyName,
+      
     };
 
     try {
@@ -100,7 +101,7 @@ const RequestAssets = () => {
               <th>Name</th>
               <th>Type</th>
               <th className="text-center">Available</th>
-              <th className="text-center">Quantity</th>
+              {/* <th className="text-center">Quantity</th> */}
               <th className="text-center">Action</th>
             </tr>
           </thead>
@@ -158,7 +159,7 @@ const RequestAssets = () => {
                     </td>
 
                     {/* Quantity */}
-                    <td>
+                    {/* <td>
                       <div className="flex items-center justify-center gap-2">
                         <button
                           className="btn btn-xs btn-outline"
@@ -186,7 +187,7 @@ const RequestAssets = () => {
                           +
                         </button>
                       </div>
-                    </td>
+                    </td> */}
 
                     {/* Action */}
                     <td className="text-center">

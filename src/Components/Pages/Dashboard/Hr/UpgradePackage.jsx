@@ -17,7 +17,17 @@ const UpgradePackage = () => {
     },
   });
 
-  console.log(packages);
+  // upgrade 
+  let {data: subscription = []} = useQuery({
+    queryKey:  ['subscription'], 
+    queryFn: async ()=>{
+      let res = await axiosSecure.get(`http://localhost:3000/user/${user?.email}`)
+      return res.data
+    }
+  })
+  console.log(subscription, 'my subscriton')
+
+
 
   if (isLoading) {
     return <p className="text-center mt-10">Loading packages...</p>;
@@ -31,12 +41,9 @@ const UpgradePackage = () => {
       hrEmail: user.email,
     };
 
-    let res = await axiosSecure.post(
-      "/create-checkout-session",
-      paymentinformation
-    );
+    let res = await axiosSecure.post("/create-checkout-session",paymentinformation);
     
-    console.log(res.data)
+    console.log(res.data, 'resdata')
     window.location.href = res.data.url
     
   };
@@ -48,6 +55,7 @@ const UpgradePackage = () => {
         <h2 className="text-4xl font-bold">
           Simple & Transparent <span className="text-teal-500">Pricing</span>
         </h2>
+
         <p className="text-gray-500 mt-3">
           Choose the perfect plan based on your company size. No hidden costs.
         </p>
@@ -56,7 +64,7 @@ const UpgradePackage = () => {
       {/* Cards */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {packages.map((pkg) => {
-          const isPopular = pkg.name === "Standard";
+          const isPopular = pkg.name === "Premium";
 
           return (
             <div
@@ -102,7 +110,10 @@ const UpgradePackage = () => {
                     : "border border-teal-500 text-teal-600 hover:bg-teal-50"
                 }`}
               >
-                Choose {pkg.name}
+                {
+                  subscription.subscription === pkg.name? <p>Current plan</p> : <p>Chose</p>
+                }
+                
               </button>
             </div>
           );

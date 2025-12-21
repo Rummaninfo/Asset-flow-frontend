@@ -17,7 +17,7 @@ const HrEmployeeList = () => {
     queryKey: ["hrEmployee", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/hr/employees/${user.email}`);
+      const res = await axiosSecure.get(`http://localhost:3000/hr/employees/${user?.email}`);
       return res.data?.employees || [];
     },
   });

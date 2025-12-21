@@ -1,36 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import UseAuth from "../../../../Hook/UseAuth";
 import UseAxios from "../../../../Hook/UseAxios";
-import { useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
 
 const AllRequests = () => {
   const axiosSecure = UseAxios();
   const { user } = UseAuth();
-  console.log(user, "ami user");
-  let navigate = useNavigate()
+  const navigate = useNavigate();
 
-  // axiosSecure.get(`/user/${user.email}`)
-  // .then(data=>{
-  //   console.log(data, 'data asche')
-  // })
-  // .catch(er=>{
-  //   console.log(er)
-  // })
-
-  let { data: hr = [] } = useQuery({
-    queryKey: ["hr"],
+  // ✅ HR info (packageLimit, currentEmployees)
+  const { data: hr = {} } = useQuery({
+    queryKey: ["hr", user?.email],
+    enabled: !!user?.email,
     queryFn: async () => {
-      let res = await axiosSecure.get(`/user/${user.email}`);
+      const res = await axiosSecure.get(`/user/${user.email}`);
       return res.data;
     },
   });
-  console.log(hr, "hrrrrrrrrrrrrr");
 
-  
-
-  
+  // ✅ HR Requests list
   const {
     data: requests = [],
     isLoading,
@@ -44,41 +33,40 @@ const AllRequests = () => {
       return res.data;
     },
   });
-  console.log(requests, "all request");
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading requests...</p>;
+    return (
+      <p className="text-center mt-16 text-lg text-gray-500">
+        Loading requests...
+      </p>
+    );
   }
 
   if (error) {
     return (
-      <p className="text-center mt-10 text-red-500">Failed to load requests</p>
+      <p className="text-center mt-16 text-red-500">
+        Failed to load requests
+      </p>
     );
   }
 
-  // approve / reject handler
-  const handleUpdateStatus = async (id, status, req) => {
-    console.log(req, "al reqiest");
+  // ✅ Approve / Reject
+  const handleUpdateStatus = async (id, status) => {
+    const isLimited = hr?.currentEmployees >= hr?.packageLimit;
 
-    let isLimited = hr?.currentEmployees >= hr.packageLimit;
-  console.log(isLimited);
- 
-
-  if (isLimited && status === "approved") {
-    Swal.fire({
-      icon: "error",
-      title: "Package Limit Exceeded",
-      text: "আপনার প্যাকেজে ৫ জনের বেশি employee add করা যাবে না",
-      confirmButtonText: "Upgrade Package",
-      
-    })
-    navigate('/dashboard/upgrade-package')
-    return; // ⛔ এখানেই থামবে
-  }
-    try {
-      await axiosSecure.patch(`/requests/${id}`, {
-        status,
+    if (status === "approved" && isLimited) {
+      Swal.fire({
+        icon: "error",
+        title: "Package Limit Exceeded",
+        text: "Please upgrade your package",
+        confirmButtonText: "Upgrade",
       });
+      navigate("/dashboard/upgrade-package");
+      return;
+    }
+
+    try {
+      await axiosSecure.patch(`/requests/${id}`, { status });
       refetch();
     } catch (err) {
       console.error(err);
@@ -86,89 +74,101 @@ const AllRequests = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">
-        Employee Requests ({requests.length})
-      </h2>
+    <div className="p-6">
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Employee Requests</h2>
+          <span className="badge badge-primary badge-lg">
+            {requests.length}
+          </span>
+        </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
-            <tr>
-              <th>#</th>
-              <th>Employee</th>
-              <th>Asset</th>
-              <th>Quantity</th>
-              <th>Request Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {requests.length === 0 ? (
+        {/* Table */}
+        <div className="overflow-x-auto border rounded-lg">
+          <table className="table table-zebra w-full">
+            <thead className="bg-gray-100">
               <tr>
-                <td colSpan="7" className="text-center py-6">
-                  No requests found
-                </td>
+                <th>#</th>
+                <th>Employee</th>
+                <th>Asset</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th className="text-center">Action</th>
               </tr>
-            ) : (
-              requests.map((req, index) => (
-                <tr key={req._id}>
-                  <td>{index + 1}</td>
+            </thead>
 
-                  <td>
-                    <p className="font-medium">{req.requesterName}</p>
-                    <p className="text-xs text-gray-500">
-                      {req.requesterEmail}
-                    </p>
-                  </td>
-
-                  <td>{req.assetName}</td>
-
-                  <td>{req.requestedQuantity}</td>
-
-                  <td>{new Date(req.requestDate).toLocaleDateString()}</td>
-
-                  <td>
-                    {req.requestStatus === "pending" && (
-                      <span className="badge badge-warning">Pending</span>
-                    )}
-                    {req.requestStatus === "approved" && (
-                      <span className="badge badge-success">Approved</span>
-                    )}
-                    {req.requestStatus === "rejected" && (
-                      <span className="badge badge-error">Rejected</span>
-                    )}
-                  </td>
-
-                  <td className="space-x-2">
-                    {req.status === "pending" && (
-                      <>
-                        <button
-                          className="btn btn-xs btn-success"
-                          onClick={() =>
-                            handleUpdateStatus(req._id, "approved", req)
-                          }
-                        >
-                          Approve
-                        </button>
-                        <button
-                          className="btn btn-xs btn-error"
-                          onClick={() =>
-                            handleUpdateStatus(req._id, "rejected")
-                          }
-                        >
-                          Reject
-                        </button>
-                      </>
-                    )}
+            <tbody>
+              {requests.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-10 text-gray-500">
+                    No requests found
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                requests.map((req, index) => (
+                  <tr key={req._id}>
+                    <td>{index + 1}</td>
+
+                    <td>
+                      <p className="font-semibold">{req.requesterName}</p>
+                      <p className="text-xs text-gray-500">
+                        {req.requesterEmail}
+                      </p>
+                    </td>
+
+                    <td>{req.assetName}</td>
+
+                    <td>
+                      {new Date(req.requestDate).toLocaleDateString()}
+                    </td>
+
+                    <td>
+                      <span
+                        className={`badge ${
+                          req.status === "pending"
+                            ? "badge-warning"
+                            : req.status === "approved"
+                            ? "badge-success"
+                            : "badge-error"
+                        }`}
+                      >
+                        {req.status}
+                      </span>
+                    </td>
+
+                    <td className="text-center">
+                      {req.status === "pending" ? (
+                        <div className="flex justify-center gap-2">
+                          <button
+                            className="btn btn-xs btn-success"
+                            onClick={() =>
+                              handleUpdateStatus(req._id, "approved")
+                            }
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="btn btn-xs btn-error"
+                            onClick={() =>
+                              handleUpdateStatus(req._id, "rejected")
+                            }
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-sm capitalize">
+                          {req.status}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
