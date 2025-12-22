@@ -9,7 +9,7 @@ Frontend (Firebase Hosting):
 👉 https://assetsflow-ec37a.web.app
 
 Backend (Vercel):
-👉 https://assetverse-backend.vercel.app
+👉 https://assetflow-backend-tau.vercel.app
 
 Key Features
 🔐 Authentication & Authorization
