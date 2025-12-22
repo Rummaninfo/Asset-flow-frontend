@@ -20,7 +20,10 @@ import UpgradePackage from "../Pages/Dashboard/Hr/UpgradePackage";
 import PaymentSucess from "../Pages/Dashboard/Payments/PaymentSucess";
 import PaymentCancel from "../Pages/Dashboard/Payments/PaymentCancel";
 import EmployeProfile from "../Pages/Dashboard/Employee/EmployeProfile";
-
+import Forbidden from "../Forbidden ";
+import HrPrivate from "./Private/HrPrivate";
+import Error from "../Pages/Error";
+import EmployeePrivate from "./Private/EmployeePriavte";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +36,6 @@ export const router = createBrowserRouter([
         element: <Home></Home>,
       },
 
-      
       {
         path: "/register",
         element: <Register></Register>,
@@ -53,69 +55,84 @@ export const router = createBrowserRouter([
             index: true,
             element: <Login></Login>,
           },
-        
         ],
       },
     ],
   },
 
-
   {
-    path:"dashboard",
-    element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
+    path: "dashboard",
+    element: (
+      <PrivateRoutes>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoutes>
+    ),
     children: [
       // hr
-         {
-          path: "assets-list", 
-          element: <AssetsList></AssetsList>
-         } ,
-         {
-          path: "add-assets", 
-          element: <AddAsets></AddAsets>
-         } ,
+      {
+        path: "assets-list",
+        element: <HrPrivate><AssetsList></AssetsList>,</HrPrivate>
+      },
+      {
+        path: "add-assets",
+        element: <HrPrivate><AddAsets></AddAsets>,</HrPrivate>
+      },
 
+      //  employee
+      {
+        path: "my-assets",
+        element: <EmployeePrivate><MyAssets></MyAssets></EmployeePrivate>  // employe
+      },
+      {
+        path: "requestAnassets",
+        element: <EmployeePrivate><RequestAssests></RequestAssests></EmployeePrivate>   , // emplyee
+      },
+      {
+        path: "allrequest",
+        element: <HrPrivate><AllRequests></AllRequests>,</HrPrivate>
+      },
+      {
+        path: "myteam",
+        element: <EmployeePrivate><MyTeam></MyTeam></EmployeePrivate> // employee
+      },
+      {
+        path: "employee-list",
+        element: <HrPrivate><EmployeeList></EmployeeList></HrPrivate>
+      },
+      {
+        path: "hr-profile",
+        element: <HrPrivate><HrProfile></HrProfile>,</HrPrivate>
+      },
+      {
+        path: "employeprofile",
+        element: <EmployeePrivate><EmployeProfile></EmployeProfile></EmployeePrivate>, // employee
+      },
+      {
+        path: "upgrade-package",
+        element: (
+          <HrPrivate>
+            <UpgradePackage></UpgradePackage>
+          </HrPrivate>
+        ),
+      },
+      {
+        path: "payment-success",
+        element: <HrPrivate><PaymentSucess></PaymentSucess>,</HrPrivate>
+      },
+      {
+        path: "payment-cancel",
+        element: <PaymentCancel></PaymentCancel>,
+      },
+      
+    ],
+  },
+{
+  path: "/forbidden",
+  element: <Forbidden />
+},
+{
+  path: "*",
+  element: <Error></Error>
+}
 
-        //  employee
-         {
-          path: "my-assets", 
-          element: <MyAssets></MyAssets>
-         } ,
-         {
-          path: "requestAnassets", 
-          element: <RequestAssests></RequestAssests>
-         } ,
-         {
-          path: "allrequest", 
-          element: <AllRequests></AllRequests>
-         } ,
-         {
-          path: "myteam", 
-          element: <MyTeam></MyTeam>
-         } ,
-         {
-          path: "employee-list", 
-          element: <EmployeeList></EmployeeList>
-         } ,
-         {
-          path: "hr-profile", 
-          element: <HrProfile></HrProfile>
-         } ,
-         {
-          path: "employeprofile", 
-          element: <EmployeProfile></EmployeProfile>
-         } ,
-         {
-          path: "upgrade-package", 
-          element: <UpgradePackage></UpgradePackage>
-         } ,
-         {
-          path: "payment-success", 
-          element: <PaymentSucess></PaymentSucess>
-         } ,
-         {
-          path: "payment-cancel", 
-          element: <PaymentCancel></PaymentCancel>
-         } ,
-    ]
-  }
 ]);

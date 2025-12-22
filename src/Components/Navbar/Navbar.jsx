@@ -18,23 +18,23 @@ const Navbar = () => {
         </NavLink>
       </li>
 
-      <li>
+      {/* <li>
         <NavLink to="/packages" className={activeClass}>
           Packages
         </NavLink>
-      </li>
-
+      </li> */}
+{/* 
       <li>
         <NavLink to="/about" className={activeClass}>
           About
         </NavLink>
-      </li>
+      </li> */}
 
-      <li>
+      {/* <li>
         <NavLink to="/contact" className={activeClass}>
           Contact
         </NavLink>
-      </li>
+      </li> */}
       {user && (
       <li>
         <NavLink to="/dashboard" className={activeClass}>
