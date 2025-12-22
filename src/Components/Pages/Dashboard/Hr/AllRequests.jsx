@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UseAuth from "../../../../Hook/UseAuth";
 import UseAxios from "../../../../Hook/UseAxios";
 import Swal from "sweetalert2";
@@ -8,6 +8,7 @@ const AllRequests = () => {
   const axiosSecure = UseAxios();
   const { user } = UseAuth();
   const navigate = useNavigate();
+  let queryClient = useQueryClient()
 
   // ✅ HR info (packageLimit, currentEmployees)
   const { data: hr = {} } = useQuery({
@@ -67,6 +68,8 @@ const AllRequests = () => {
 
     try {
       await axiosSecure.patch(`/requests/${id}`, { status });
+          
+
       refetch();
     } catch (err) {
       console.error(err);

@@ -36,7 +36,7 @@ const AddAsets = () => {
         };
 
         axiosSecure
-          .post("/add-asset", assetData)
+          .post("/add-asset",assetData)
           .then(() => {
             Swal.fire({
               icon: "success",
