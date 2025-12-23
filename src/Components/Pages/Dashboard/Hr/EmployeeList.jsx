@@ -7,7 +7,7 @@ import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
 import Loading from "../../../Loading/Loading";
 
-const HrEmployeeList = () => {
+const EmployeeList = () => {
   const queryClient = useQueryClient();
   const axiosSecure = UseAxios();
   const { user } = UseAuth();
@@ -219,4 +219,4 @@ const HrEmployeeList = () => {
   );
 };
 
-export default HrEmployeeList;
+export default EmployeeList;
