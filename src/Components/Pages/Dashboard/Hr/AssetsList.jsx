@@ -16,6 +16,8 @@ import {
 } from "recharts";
 import Swal from "sweetalert2";
 import UseAuth from "../../../../Hook/UseAuth";
+import Loading from "../../../Loading/Loading";
+
 
 const AssetsList = () => {
   const axiosSecure = UseAxios();
@@ -113,7 +115,7 @@ const AssetsList = () => {
     setSearchParams({ page: 1, limit: newLimit });
   };
 
-  if (isLoading) return <p className="text-center py-10">Loading...</p>;
+  if (isLoading) return  <Loading></Loading>
   if (error)
     return <p className="text-center py-10 text-red-500">Error loading data</p>;
   let handleRemove = async (id) => {

@@ -5,6 +5,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
+import Loading from "../../../Loading/Loading";
 
 const HrEmployeeList = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ const HrEmployeeList = () => {
     queryKey: ["hrEmployee", user?.email],
     enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(`http://localhost:3000/hr/employees/${user?.email}`);
+      const res = await axiosSecure.get(`/hr/employees/${user?.email}`);
       return res.data?.employees || [];
     },
   });
@@ -77,12 +78,7 @@ const HrEmployeeList = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        <span className="ml-3">Loading employees...</span>
-      </div>
-    );
+    return <Loading></Loading>
   }
 
   return (

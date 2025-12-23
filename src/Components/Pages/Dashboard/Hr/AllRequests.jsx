@@ -3,6 +3,7 @@ import UseAuth from "../../../../Hook/UseAuth";
 import UseAxios from "../../../../Hook/UseAxios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import Loading from "../../../Loading/Loading";
 
 const AllRequests = () => {
   const axiosSecure = UseAxios();
@@ -36,11 +37,7 @@ const AllRequests = () => {
   });
 
   if (isLoading) {
-    return (
-      <p className="text-center mt-16 text-lg text-gray-500">
-        Loading requests...
-      </p>
-    );
+    return <Loading></Loading>
   }
 
   if (error) {

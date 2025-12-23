@@ -42,7 +42,7 @@ const AddAsets = () => {
       };
 
       // add asset
-      const assetRes = await fetch("http://localhost:3000/add-asset", {
+      const assetRes = await fetch("https://assetflow-backend-tau.vercel.app/add-asset", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

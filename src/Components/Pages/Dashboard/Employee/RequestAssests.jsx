@@ -3,6 +3,7 @@ import { useState } from "react";
 import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
 import { FiPackage } from "react-icons/fi";
+import Loading from "../../../Loading/Loading";
 
 const RequestAssets = () => {
   const axiosSecure = UseAxios();
@@ -24,11 +25,7 @@ const RequestAssets = () => {
   console.log(assets, 'my assets')
 
   if (isLoading) {
-    return (
-      <p className="text-center mt-10 text-slate-500">
-        Loading assets...
-      </p>
-    );
+    return <Loading></Loading>
   }
 
   if (error) {

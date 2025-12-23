@@ -3,6 +3,7 @@ import UseAxios from "../../../../Hook/UseAxios";
 import { FaCheck } from "react-icons/fa";
 import UseAuth from "../../../../Hook/UseAuth";
 import { useNavigate } from "react-router";
+import Loading from "../../../Loading/Loading";
 
 const UpgradePackage = () => {
   const axiosSecure = UseAxios();
@@ -21,7 +22,7 @@ const UpgradePackage = () => {
   let {data: subscription = []} = useQuery({
     queryKey:  ['subscription'], 
     queryFn: async ()=>{
-      let res = await axiosSecure.get(`http://localhost:3000/user/${user?.email}`)
+      let res = await axiosSecure.get(`/user/${user?.email}`)
       return res.data
     }
   })
@@ -30,7 +31,7 @@ const UpgradePackage = () => {
 
 
   if (isLoading) {
-    return <p className="text-center mt-10">Loading packages...</p>;
+    return <Loading></Loading>
   }
   let hanglePayment = async (pkg) => {
     const paymentinformation = {

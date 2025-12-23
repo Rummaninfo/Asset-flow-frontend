@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
+import Loading from "../../../Loading/Loading";
 
 const MyAssets = () => {
   const axiosSecure = UseAxios();
@@ -23,11 +24,7 @@ const MyAssets = () => {
   console.log(requests, "all assets")
 
   if (isLoading) {
-    return (
-      <p className="text-center mt-10">
-        Loading your assets...
-      </p>
-    );
+    return <Loading></Loading>
   }
 
   if (error) {

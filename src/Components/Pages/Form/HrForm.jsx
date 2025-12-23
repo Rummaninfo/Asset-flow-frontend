@@ -6,9 +6,10 @@ import { useNavigate } from "react-router";
 import UseAxios from "../../../Hook/UseAxios";
 import axios from "axios";
 import { updateProfile } from "firebase/auth";
+import Loading from "../../Loading/Loading";
 
 const HrForm = () => {
-  const { createuser, user, setUser } = UseAuth();
+  const { createuser, user, setUser, loading } = UseAuth();
     
   const axiosSecure = UseAxios();
   const navigate = useNavigate();
@@ -80,6 +81,10 @@ const HrForm = () => {
       });
     }
   };
+
+  if(loading){
+    <Loading></Loading>
+  }
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white rounded-xl shadow">
