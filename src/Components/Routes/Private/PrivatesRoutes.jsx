@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Navigate, useLocation } from 'react-router';
 import UseAuth from '../../../Hook/UseAuth';
+import Loading from '../../Loading/Loading';
 
 const PrivateRoutes = ({children}) => {
     let {user, loading} = UseAuth()
@@ -9,8 +10,10 @@ const PrivateRoutes = ({children}) => {
     
     
     if(loading){
-       return  <p>loadinggg</p>
+       return <Loading></Loading>
     }
+
+    console.log(user, 'ami user')
     
   if (!user) {
     return <Navigate state={{from:location?.pathname}} to="/register/login" replace />;

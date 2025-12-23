@@ -32,7 +32,7 @@ const EmployeeForm = () => {
       const payload = {
         name: data.name,
         email: data.email,
-        password: data.password, // ⚠️ backend-এ hash করা উচিত
+        password: data.password, 
         dateOfBirth: data.dateOfBirth,
         role: "employee",
       };

@@ -3,7 +3,7 @@ import UseAuth from "../../../../Hook/UseAuth";
 import { FaUserCircle } from "react-icons/fa";
 
 const HrProfile = () => {
-  const { user, updateUserProfile } = UseAuth();
+  const { user, updateUserProfile, loading } = UseAuth();
 
   const [name, setName] = useState(user?.displayName || "");
   const [photo, setPhoto] = useState(user?.photoURL || "");

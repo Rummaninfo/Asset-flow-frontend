@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UseAuth from "../../../../Hook/UseAuth";
 import UseAxios from "../../../../Hook/UseAxios";
@@ -9,7 +10,10 @@ const AllRequests = () => {
   const axiosSecure = UseAxios();
   const { user } = UseAuth();
   const navigate = useNavigate();
-  let queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // ✅ HR info (packageLimit, currentEmployees)
   const { data: hr = {} } = useQuery({
@@ -37,7 +41,7 @@ const AllRequests = () => {
   });
 
   if (isLoading) {
-    return <Loading></Loading>
+    return <Loading />;
   }
 
   if (error) {
@@ -47,6 +51,14 @@ const AllRequests = () => {
       </p>
     );
   }
+
+  // Calculate the data for the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRequests = requests.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // ✅ Approve / Reject
   const handleUpdateStatus = async (id, status) => {
@@ -65,7 +77,6 @@ const AllRequests = () => {
 
     try {
       await axiosSecure.patch(`/requests/${id}`, { status });
-          
 
       refetch();
     } catch (err) {
@@ -97,32 +108,27 @@ const AllRequests = () => {
                 <th className="text-center">Action</th>
               </tr>
             </thead>
-
             <tbody>
-              {requests.length === 0 ? (
+              {currentRequests.length === 0 ? (
                 <tr>
                   <td colSpan="6" className="text-center py-10 text-gray-500">
                     No requests found
                   </td>
                 </tr>
               ) : (
-                requests.map((req, index) => (
+                currentRequests.map((req, index) => (
                   <tr key={req._id}>
-                    <td>{index + 1}</td>
-
+                    <td>{indexOfFirstItem + index + 1}</td>
                     <td>
                       <p className="font-semibold">{req.requesterName}</p>
                       <p className="text-xs text-gray-500">
                         {req.requesterEmail}
                       </p>
                     </td>
-
                     <td>{req.assetName}</td>
-
                     <td>
                       {new Date(req.requestDate).toLocaleDateString()}
                     </td>
-
                     <td>
                       <span
                         className={`badge ${
@@ -136,7 +142,6 @@ const AllRequests = () => {
                         {req.status}
                       </span>
                     </td>
-
                     <td className="text-center">
                       {req.status === "pending" ? (
                         <div className="flex justify-center gap-2">
@@ -168,6 +173,26 @@ const AllRequests = () => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-6">
+          {Array.from(
+            { length: Math.ceil(requests.length / itemsPerPage) },
+            (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => paginate(index + 1)}
+                className={`btn btn-sm mx-1 ${
+                  currentPage === index + 1
+                    ? "btn-primary"
+                    : "btn-outline-primary"
+                }`}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
         </div>
       </div>
     </div>

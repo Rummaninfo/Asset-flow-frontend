@@ -14,6 +14,7 @@ const EmployeePrivate = ({ children }) => {
       </div>
     );
   }
+  console.log(role, "role ")
 
   if (role !== "employee") {
     return <Forbidden />;

@@ -9,6 +9,7 @@ let axiosSecure = axios.create({
 });
 const UseAxios = () => {
   let { user, logOutUser } = UseAuth();
+  console.log("user ashe" , user)
   let navigate = useNavigate()
 
   useEffect(() => {
@@ -24,9 +25,11 @@ const UseAxios = () => {
 
           let statusCode = error.status 
           if(statusCode === 401 || statusCode === 403 ){
+            
               logOutUser()
               .then(res=>{
                    console.log(res)
+                   console.log("undefined ascheeeeee")
                    navigate("register/login")
               })
               .catch(er=>{
