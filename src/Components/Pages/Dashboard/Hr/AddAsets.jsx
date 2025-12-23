@@ -1,14 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FiPlusSquare } from "react-icons/fi";
-import UseAxios from "../../../../Hook/UseAxios";
 import UseAuth from "../../../../Hook/UseAuth";
 import Swal from "sweetalert2";
 
 const AddAsets = () => {
   const { register, handleSubmit, reset } = useForm();
-  let axiosSecure = UseAxios();
   let { user } = UseAuth();
+  console.log(user)
 
   const onSubmit = async (data) => {
     const imageFile = data.productImage[0];
@@ -20,40 +19,53 @@ const AddAsets = () => {
       import.meta.env.VITE_IMG
     }`;
 
-    axiosSecure
-      .post(imgApi, formData)
-      .then((result) => {
-        let imgURL = result.data.data.display_url;
+    try {
+      // image upload
+      const imgRes = await fetch(imgApi, {
+        method: "POST",
+        body: formData,
+      });
+      console.log(imgRes)
 
-        const assetData = {
-          productName: data.productName,
-          productImage: imgURL,
-          productType: data.productType,
-          productQuantity: Number(data.productQuantity),
-          availableQuantity: Number(data.productQuantity),
-          hrEmail: data.hrEmail,
-          companyName: data.companyName,
-        };
+      const imgResult = await imgRes.json();
+      let imgURL = imgResult.data.display_url;
+      console.log(imgResult)
 
-        axiosSecure
-          .post("/add-asset",assetData)
-          .then(() => {
-            Swal.fire({
-              icon: "success",
-              title: "Asset Added Successfully!",
-              text: "Your asset has been added to the inventory.",
-              confirmButtonColor: "#2563eb",
-            });
-          })
-          .catch((er) => {
-            console.log(er);
-          });
-      })
-      .catch((er) => {
-        console.log(er);
+      const assetData = {
+        productName: data.productName,
+        productImage: imgURL,
+        productType: data.productType,
+        productQuantity: Number(data.productQuantity),
+        availableQuantity: Number(data.productQuantity),
+        hrEmail: data.hrEmail,
+        companyName: data.companyName,
+      };
+
+      // add asset
+      const assetRes = await fetch("http://localhost:3000/add-asset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.accessToken}`
+        },
+        body: JSON.stringify(assetData),
       });
 
-    reset();
+      if (!assetRes.ok) {
+        throw new Error("Failed to add asset");
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: "Asset Added Successfully!",
+        text: "Your asset has been added to the inventory.",
+        confirmButtonColor: "#2563eb",
+      });
+
+      reset();
+    } catch (er) {
+      console.log(er);
+    }
   };
 
   return (

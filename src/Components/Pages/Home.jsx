@@ -43,8 +43,8 @@ const Home = () => {
             </h1>
 
             <p className="mt-6 text-lg text-gray-600 max-w-lg leading-relaxed">
-              Track, assign, and control company assets with a clean,
-              secure, HR-friendly workflow built for growing teams.
+              Track, assign, and control company assets with a clean, secure,
+              HR-friendly workflow built for growing teams.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -111,13 +111,16 @@ const Home = () => {
             variants={fadeUp}
             viewport={{ once: true }}
           >
-            Why Choose{" "}
-            <span className="text-teal-600">AssetVerse</span>?
+            Why Choose <span className="text-teal-600">AssetVerse</span>?
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              ["🔒", "Prevent Asset Loss", "Track every asset with accountability."],
+              [
+                "🔒",
+                "Prevent Asset Loss",
+                "Track every asset with accountability.",
+              ],
               ["📋", "Approval Workflow", "Employees request, HR approves."],
               ["🏢", "Multi-company", "Work across multiple organizations."],
               ["📊", "Analytics", "Visual insights & reports."],
@@ -149,8 +152,7 @@ const Home = () => {
       <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800">
-            Simple &{" "}
-            <span className="text-teal-600">Transparent Pricing</span>
+            Simple & <span className="text-teal-600">Transparent Pricing</span>
           </h2>
 
           <p className="text-center text-gray-600 mt-4 mb-14">
@@ -158,7 +160,7 @@ const Home = () => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg) => {
+            {packages?.map((pkg) => {
               const popular = pkg.name === "Standard";
 
               return (

@@ -3,7 +3,9 @@ import React, { useEffect } from "react";
 import UseAuth from "./UseAuth";
 import { useNavigate } from "react-router";
 let axiosSecure = axios.create({
-  baseURL: "https://assetflow-backend-tau.vercel.app",
+  baseURL: "http://localhost:3000",
+
+
 });
 const UseAxios = () => {
   let { user, logOutUser } = UseAuth();
@@ -39,7 +41,7 @@ const UseAxios = () => {
       axiosSecure.interceptors.response.eject(resInterceptor)
 
     }
-  }, [user, ]);
+  }, [user,logOutUser, navigate ]);
 
   return axiosSecure;
 };

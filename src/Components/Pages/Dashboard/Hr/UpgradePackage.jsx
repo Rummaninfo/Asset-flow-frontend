@@ -63,7 +63,7 @@ const UpgradePackage = () => {
 
       {/* Cards */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {packages.map((pkg) => {
+        {packages?.map((pkg) => {
           const isPopular = pkg.name === "Premium";
 
           return (

@@ -3,7 +3,6 @@ import UseRole from "../../../Hook/UseRole";
 import Forbidden from "../../Forbidden ";
 
 
-
 const EmployeePrivate = ({ children }) => {
   const { loading } = UseAuth();
   const { isLoading, role } = UseRole();
