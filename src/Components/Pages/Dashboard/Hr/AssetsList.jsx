@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import UseAxios from "../../../../Hook/UseAxios";
@@ -23,6 +23,7 @@ const AssetsList = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const queryClient = useQueryClient();
   const { user } = UseAuth();
+  const employeeRef = useRef();
 
   const page = parseInt(searchParams.get("page")) || 1;
   const limit = parseInt(searchParams.get("limit")) || 10;
@@ -40,6 +41,8 @@ const AssetsList = () => {
     },
   });
 
+ 
+
   // Employees
   const { data: allEmployee = [] } = useQuery({
     queryKey: ["employee"],
@@ -49,7 +52,7 @@ const AssetsList = () => {
     },
   });
 
-  console.log(allEmployee)
+  console.log(allEmployee, 'all employee');
 
   // Delete asset
   const deleteMutation = useMutation({
@@ -123,13 +126,15 @@ const AssetsList = () => {
     });
   };
 
+  let hangleAssign  = ()=>{
+    let selectedEmployee = employeeRef.current.value 
+    console.log(selectedEmployee)
+    document.getElementById("assign_modal").close();
+  }
+
   if (isLoading) return <Loading />;
   if (error)
-    return (
-      <p className="text-center py-10 text-red-500">
-        Error loading data
-      </p>
-    );
+    return <p className="text-center py-10 text-red-500">Error loading data</p>;
 
   return (
     <div className="p-6">
@@ -203,9 +208,7 @@ const AssetsList = () => {
           <tbody>
             {currentAssets.map((asset, index) => (
               <tr key={asset._id}>
-                <td className="py-3 px-4">
-                  {startIndex + index + 1}
-                </td>
+                <td className="py-3 px-4">{startIndex + index + 1}</td>
                 <td className="py-3 px-4">
                   <img
                     src={asset.productImage}
@@ -220,10 +223,10 @@ const AssetsList = () => {
                 <td className="py-3 px-4">
                   <button
                     className="btn"
+                    
                     onClick={() =>
-                      document
-                        .getElementById("assign_modal")
-                        .showModal()
+                      
+                      document.getElementById("assign_modal").showModal()
                     }
                   >
                     Assign
@@ -246,19 +249,24 @@ const AssetsList = () => {
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-4">Assign Asset</h3>
 
-          <select className="select text-black select-bordered w-full">
+          <select
+            ref={employeeRef}
+            className="select text-black select-bordered w-full"
+          >
             <option disabled selected>
               Select Employee
             </option>
             {allEmployee.map((emp) => (
-              <option key={emp._id}>{emp.employeeName} | {emp.employeeEmail}</option>
+              <option key={emp._id} value={emp.employeeEmail}>
+                {emp.employeeName} | {emp.employeeEmail}
+              </option>
             ))}
           </select>
 
           <div className="modal-action">
             <form method="dialog">
               <button className="btn">Cancel</button>
-              <button className="btn ml-2">Assign</button>
+              <button type="button" onClick={hangleAssign} className="btn ml-2">Assign</button>
             </form>
           </div>
         </div>

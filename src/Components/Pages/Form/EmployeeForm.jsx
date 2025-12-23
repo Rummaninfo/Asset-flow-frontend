@@ -5,11 +5,12 @@ import UseAxios from "../../../Hook/UseAxios";
 import UseAuth from "../../../Hook/UseAuth";
 import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const EmployeeForm = () => {
   const axiosSecure = UseAxios();
   const navigate = useNavigate();
-  const { createuser } = UseAuth();
+  const { createuser, signinuser, setLoading } = UseAuth();
 
   const {
     register,
@@ -39,16 +40,36 @@ const EmployeeForm = () => {
 
       // 4️⃣ Save user in backend DB
       await axiosSecure.post("/register", payload);
+       signinuser(data.email, data.password)
+            .then((result) => {
+              navigate("/dashboard")
+              Swal.fire({
+                title: "Login Successful",
+                text: "Welcome back!",
+                icon: "success",
+                confirmButtonColor: "#14B8A6",
+              });
+      
+              reset();
+            })
+            .catch((error) => {
+              Swal.fire({
+                title: "Login Failed",
+                text: error.message,
+                icon: "error",
+                confirmButtonColor: "#EF4444",
+              });
+            });
+            
+      // Swal.fire({
+      //   title: "Registration Successful!",
+      //   text: "Employee account created successfully.",
+      //   icon: "success",
+      //   confirmButtonColor: "#14B8A6",
+      // });
 
-      Swal.fire({
-        title: "Registration Successful!",
-        text: "Employee account created successfully.",
-        icon: "success",
-        confirmButtonColor: "#14B8A6",
-      });
-
-      reset();
-      navigate("/");
+      // reset();
+      // navigate("/");
     } catch (error) {
       console.error("Employee Registration Error:", error);
       Swal.fire({
@@ -57,6 +78,7 @@ const EmployeeForm = () => {
         icon: "error",
       });
     }
+    setLoading(false)
   };
 
   return (

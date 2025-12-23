@@ -32,7 +32,7 @@ const MyTeam = () => {
       return res.data?.teamMembers || [];
     },
   });
-  console.log(companies)
+  console.log(team, 'al team')
 
   return (
     <div className="grid grid-cols-12 gap-6 p-6">
@@ -120,7 +120,7 @@ const MyTeam = () => {
                 {member.employeeEmail}
               </p>
               <span className="text-xs text-green-600">
-                {member.status}
+                {member?.employeeBirthDate || "not found"}
               </span>
             </div>
           </div>

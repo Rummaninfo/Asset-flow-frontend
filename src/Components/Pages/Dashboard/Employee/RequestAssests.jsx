@@ -55,6 +55,7 @@ const RequestAssets = () => {
 
   // 🔹 send request
   const handleRequest = async (asset) => {
+    console.log(asset, 'so sorry')
     const requestData = {
       assetId: asset._id,
       assetName: asset.productName,
