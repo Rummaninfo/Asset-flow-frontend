@@ -24,6 +24,9 @@ import Forbidden from "../Forbidden ";
 import HrPrivate from "./Private/HrPrivate";
 import Error from "../Pages/Error";
 import EmployeePrivate from "./Private/EmployeePriavte";
+import Contact from "../Pages/Additional/Contact";
+import HelpSupport from "../Pages/Additional/HelpSupport";
+import Blog from "../Pages/Additional/Blog";
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +38,21 @@ export const router = createBrowserRouter([
         index: true,
         element: <Home></Home>,
       },
+       {
+            path: "contact",
+           
+            element: <Contact></Contact>
+          },
+       {
+            path: "helpsupport",
+           
+            element: <HelpSupport></HelpSupport>
+          },
+       {
+            path: "blog",
+           
+            element: <Blog></Blog>
+          },
 
       {
         path: "/register",
@@ -55,6 +73,7 @@ export const router = createBrowserRouter([
             index: true,
             element: <Login></Login>,
           },
+         
         ],
       },
     ],

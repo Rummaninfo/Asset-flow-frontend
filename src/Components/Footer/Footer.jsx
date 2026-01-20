@@ -32,7 +32,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="link link-hover">Home</Link></li>
               <li><Link to="/packages" className="link link-hover">Packages</Link></li>
-              <li><Link to="/about" className="link link-hover">About</Link></li>
+              <li><Link to="/blog" className="link link-hover">Blog</Link></li>
               <li><Link to="/contact" className="link link-hover">Contact</Link></li>
             </ul>
           </div>
@@ -41,9 +41,9 @@ const Footer = () => {
           <div>
             <h4 className="text-sm font-semibold uppercase text-gray-600 mb-3">Join Us</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/register-employee" className="link link-hover">Join as Employee</Link></li>
-              <li><Link to="/register-hr" className="link link-hover">Join as HR Manager</Link></li>
-              <li><Link to="/login" className="link link-hover">Login</Link></li>
+              <li><Link to="/register/employee" className="link link-hover">Join as Employee</Link></li>
+              <li><Link to="/register/hr" className="link link-hover">Join as HR Manager</Link></li>
+              <li><Link to="/register/login" className="link link-hover">Login</Link></li>
             </ul>
           </div>
 

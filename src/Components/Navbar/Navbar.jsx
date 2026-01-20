@@ -12,12 +12,22 @@ const Navbar = () => {
 
   const navItems = (
     <>
+
       <li>
         <NavLink to="/" end className={activeClass}>
           Home
         </NavLink>
       </li>
-
+      <li>
+        <NavLink to="/contact" end className={activeClass}>
+          Contact
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/helpsupport" end className={activeClass}>
+          Help/Support
+        </NavLink>
+      </li>
       {/* <li>
         <NavLink to="/packages" className={activeClass}>
           Packages
@@ -36,11 +46,19 @@ const Navbar = () => {
         </NavLink>
       </li> */}
       {user && (
+      <>
+      <li>
+        <NavLink to="/blog" className={activeClass}>
+          Blog
+        </NavLink>
+      </li>
       <li>
         <NavLink to="/dashboard" className={activeClass}>
           Dashboard
         </NavLink>
       </li>
+      
+      </>
     )}
       
     </>
@@ -56,7 +74,7 @@ const Navbar = () => {
    }
 
   return (
-    <nav className="navbar bg-white shadow-sm px-4 md:px-8">
+    <nav className="navbar sticky z-50 top-0  bg-white shadow-sm px-4 md:px-8">
       {/* Navbar Start */}
       <div className="navbar-start">
         {/* Mobile Dropdown */}
